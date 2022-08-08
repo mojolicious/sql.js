@@ -1,0 +1,6 @@
+
+# Changelog
+
+## v1.0.0 (2022-08-09)
+
+First major release. This package strictly follows [Semantic Versioning](https://semver.org).
