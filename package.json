@@ -1,6 +1,6 @@
 {
   "name": "@mojojs/sql",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "SQL generator",
   "keywords": [
     "mojojs",
