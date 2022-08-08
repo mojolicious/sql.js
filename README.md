@@ -13,12 +13,12 @@ Safely generate SQL statements with tagged template literals. Written in TypeScr
 ```js
 import {sql} from '@mojojs/sql';
 
-// Safely generate SQL and placeholders ({text: 'SELECT * FROM users WHERE name = $1', values: ['sebastian']})
+// {text: 'SELECT * FROM users WHERE name = $1', values: ['sebastian']}
 const {text, values} = sql`SELECT * FROM users WHERE name = ${'sebastian'}`.toQuery();
 ```
 
-By default all interpolated values become placeholders in the generated query. Partial statements can even be used
-recursively to build more complex queries.
+To prevent SQL injection attacks, all interpolated values become placeholders in the generated query by default.
+Partial statements can even be used recursively to build more complex queries.
 
 ```js
 // Use a partial SQL query
