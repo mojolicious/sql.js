@@ -8,7 +8,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/mojolicious/sql.js/badge.svg?branch=main)](https://coveralls.io/github/mojolicious/sql.js?branch=main)
 [![npm](https://img.shields.io/npm/v/@mojojs/sql.svg)](https://www.npmjs.com/package/@mojojs/sql)
 
-Safely generate SQL statements with tagged template literals. Written in TypeScript.
+Safely generate and compose SQL statements with tagged template literals. Written in TypeScript.
 
 ```js
 import {sql} from '@mojojs/sql';
@@ -17,8 +17,8 @@ import {sql} from '@mojojs/sql';
 const {text, values} = sql`SELECT * FROM users WHERE name = ${'sebastian'}`.toQuery();
 ```
 
-To prevent SQL injection attacks, all interpolated values become placeholders in the generated query by default.
-Partial statements can even be used recursively to build more complex queries.
+To prevent SQL injection attacks, all interpolated values become placeholders in the generated query. Partial
+statements can even be used recursively to build more complex queries.
 
 ```js
 const role = 'admin';
@@ -37,11 +37,12 @@ const {text, values} = sql`SELECT * FROM users WHERE name = ${'sebastian'} ${opt
 ```
 
 And if you need a little more control over the generated SQL query, you can of course also bypass safety features with
-the tagged template literal `sqlUnsafe`. But make sure to use whatever escaping functions your database driver supports
-to escape unsafe values yourself.
+the tagged template literal `sqlUnsafe`. But make sure to handle unsafe values yourself with appropriate escaping
+functions for your database. For PostgreSQL there are `escapeLiteral` and `escapeIdentifier` functions included with
+this package.
 
 ```js
-import {sql, sqlUnsafe} from '@mojojs/sql';
+import {sql, sqlUnsafe, escapeLiteral} from '@mojojs/sql';
 
 const role = 'role = ' + escapeLiteral('power user');
 const partialQuery = sqlUnsafe`AND ${role}`;
