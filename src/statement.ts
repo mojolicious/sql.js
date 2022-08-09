@@ -1,5 +1,9 @@
 import type {Query} from './types.js';
 
+interface QueryOptions {
+  placeholder?: string;
+}
+
 /**
  * SQL statement class.
  */
@@ -59,20 +63,21 @@ export class Statement {
   /**
    * Convert SQL statement to query with placeholders.
    */
-  toQuery(): Query {
-    return {text: this.toString(), values: this.values};
+  toQuery(options?: QueryOptions): Query {
+    return {text: this.toString(options), values: this.values};
   }
 
   /**
    * Convert SQL statement to string.
    */
-  toString(): string {
+  toString(options: QueryOptions = {}): string {
     const query = [];
 
+    const placeholder = options.placeholder;
     const parts = this.parts;
     for (let i = 1; i <= parts.length; i++) {
       query.push(parts[i - 1]);
-      if (parts[i] !== undefined) query.push(`$${i}`);
+      if (parts[i] !== undefined) query.push(placeholder === undefined ? `$${i}` : placeholder);
     }
 
     return query.join('');

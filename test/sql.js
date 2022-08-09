@@ -64,5 +64,29 @@ t.test('SQL', t => {
     t.end();
   });
 
+  t.test('Custom placeholder', t => {
+    t.same(sql`SELECT 1`.toQuery({placeholder: '?'}), {text: 'SELECT 1', values: []});
+    t.same(sql`SELECT ${1};`.toQuery({placeholder: '?'}), {text: 'SELECT ?;', values: [1]});
+    t.same(sql`SELECT ${1}, ${'2'}, ${[3]};`.toQuery({placeholder: '?'}), {
+      text: 'SELECT ?, ?, ?;',
+      values: [1, '2', [3]]
+    });
+
+    const partial = sql`AND two = ${'Two'} AND three = ${3}`;
+    t.same(sql`SELECT * FROM foo WHERE one = ${'One'} ${partial}`.toQuery({placeholder: '?'}), {
+      text: 'SELECT * FROM foo WHERE one = ? AND two = ? AND three = ?',
+      values: ['One', 'Two', 3]
+    });
+    t.same(
+      sql`SELECT * FROM foo WHERE one = ${'One'} ${partial} ${partial} AND four = ${4}`.toQuery({placeholder: '?'}),
+      {
+        text: 'SELECT * FROM foo WHERE one = ? AND two = ? AND three = ? AND two = ? AND three = ? AND four = ?',
+        values: ['One', 'Two', 3, 'Two', 3, 4]
+      }
+    );
+
+    t.end();
+  });
+
   t.end();
 });

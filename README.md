@@ -21,18 +21,19 @@ To prevent SQL injection attacks, all interpolated values become placeholders in
 Partial statements can even be used recursively to build more complex queries.
 
 ```js
-// Use a partial SQL query
 const role = 'admin';
 const partialQuery = sql`AND role = ${role}`;
 const name = 'root';
+
+// {text: 'SELECT * FROM users WHERE name = $1 AND role = $2', values: ['root', 'admin']}
 const {text, values} = sql`SELECT * FROM users WHERE name = ${name} ${partialQuery}`.toQuery();
 ```
 
 Make partial statements optional to dynamically generate `WHERE` clauses.
 
 ```js
-const partialQuery = foo === true ? sql`AND foo IS NOT NULL` : sql``;
-const {text, values} = sql`SELECT * FROM users WHERE name = ${'sebastian'} ${partialQuery}`.toQuery();
+const optionalPart = foo === true ? sql`AND foo IS NOT NULL` : sql``;
+const {text, values} = sql`SELECT * FROM users WHERE name = ${'sebastian'} ${optionalPart}`.toQuery();
 ```
 
 And if you need a little more control over the generated SQL query, you can of course also bypass safety features with
@@ -45,7 +46,17 @@ import {sql, sqlUnsafe} from '@mojojs/sql';
 const role = 'role = ' + escapeLiteral('power user');
 const partialQuery = sqlUnsafe`AND ${role}`;
 const name = 'root';
+
+// {text: "SELECT * FROM users WHERE name = $1 AND role = 'power user'", values: ['root']}
 const {text, values} = sql`SELECT * FROM users WHERE name = ${name} ${partialQuery}`.toQuery();
+```
+
+For databases that do not support numbered placeholders like `$1` and `$2`, you can set a custom character with the
+`placeholder` option.
+
+```js
+// {text: 'SELECT * FROM users WHERE name = ?', values: ['root']}
+const {text, values} = sql`SELECT * FROM users WHERE name = ${'root'}`.toQuery({placeholder: '?'});
 ```
 
 ### Editor Support
