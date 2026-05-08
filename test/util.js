@@ -8,6 +8,8 @@ t.test('Util', async t => {
     t.equal(escapeIdentifier("Ain't misbehaving "), `"Ain't misbehaving "`);
     t.equal(escapeIdentifier('NULL'), '"NULL"');
     t.equal(escapeIdentifier('some"identifier'), '"some""identifier"');
+    t.equal(escapeIdentifier(['some"identifier']), '"some""identifier"');
+    t.equal(escapeIdentifier(23), '"23"');
     t.end();
   });
 
@@ -18,6 +20,8 @@ t.test('Util', async t => {
     t.equal(escapeLiteral('NULL'), "'NULL'");
     t.equal(escapeLiteral('some"identifier'), `'some"identifier'`);
     t.equal(escapeLiteral(`backslash \\all' \the things`), ` E'backslash \\\\all'' \the things'`);
+    t.equal(escapeLiteral(["' or 'a'='a"]), "''' or ''a''=''a'");
+    t.equal(escapeLiteral(23), "'23'");
     t.end();
   });
 

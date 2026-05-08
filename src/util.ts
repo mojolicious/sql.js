@@ -2,18 +2,19 @@
  * Escape identifier (only the PostgreSQL format is currently supported).
  */
 export function escapeIdentifier(identifier: string): string {
-  return '"' + identifier.replaceAll('"', '""') + '"';
+  return '"' + String(identifier).replaceAll('"', '""') + '"';
 }
 
 /**
  * Escape literal (only the PostgreSQL format is currently supported).
  */
 export function escapeLiteral(literal: string): string {
+  const string = String(literal);
   let result = '';
   let escapeString = false;
 
-  for (let i = 0; i < literal.length; i++) {
-    const char = literal[i];
+  for (let i = 0; i < string.length; i++) {
+    const char = string[i];
     if (char === "'") {
       result += "''";
     } else if (char === '\\') {
