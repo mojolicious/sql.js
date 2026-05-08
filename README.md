@@ -66,7 +66,7 @@ const {text, values} = sql`SELECT * FROM users WHERE name = ${'root'}`.toQuery({
 
 ## Installation
 
-All you need is Node.js 16.0.0 (or newer).
+All you need is Node.js 20.0.0 (or newer).
 
 ```
 $ npm install @mojojs/sql
