@@ -1,4 +1,4 @@
-import type {Query} from './types.js';
+import type {Query} from './types.ts';
 
 interface QueryOptions {
   placeholder?: string;

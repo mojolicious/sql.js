@@ -1,7 +1,7 @@
-import {Statement} from './statement.js';
+import {Statement} from './statement.ts';
 
 export {Statement};
-export * from './util.js';
+export * from './util.ts';
 
 export function sql(parts: TemplateStringsArray, ...values: any[]): Statement {
   return Statement.sql(parts, ...values);

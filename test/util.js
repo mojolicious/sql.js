@@ -1,4 +1,4 @@
-import {escapeIdentifier, escapeLiteral} from '../lib/sql.js';
+import {escapeIdentifier, escapeLiteral} from '../src/sql.ts';
 import t from 'tap';
 
 t.test('Util', async t => {
